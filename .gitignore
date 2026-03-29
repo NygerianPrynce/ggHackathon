@@ -1,3 +1,6 @@
+.DS_Store
+extension.zip
+
 # Sensitive data
 .browser_profile/
 venv/

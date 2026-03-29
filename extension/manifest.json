@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "ReADY Bot",
+  "version": "0.1.0",
+  "description": "Voice-assisted maintenance requests for Vanderbilt ReADY",
+  "permissions": ["sidePanel", "scripting", "tabs", "storage"],
+  "host_permissions": ["https://ready.app.vanderbilt.edu/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "ReADY Bot"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://ready.app.vanderbilt.edu/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
