@@ -95,7 +95,16 @@ const VU_BUILDINGS = [
 
 function matchCategory(issueText) {
   const textLower = issueText.toLowerCase();
-  if (textLower.includes("my room") || textLower.includes("in my room")) {
+  if (
+    textLower.includes("my room") ||
+    textLower.includes("in my room") ||
+    textLower.includes("my dorm") ||
+    textLower.includes("in my dorm") ||
+    textLower.includes("dorm room") ||
+    textLower.includes("residence hall") ||
+    textLower.includes("my apartment") ||
+    textLower.includes("in my apartment")
+  ) {
     return [RESIDENTIAL_CAT_ID, "Residential Hall Room Maintenance Issue"];
   }
   let bestMatch = null;

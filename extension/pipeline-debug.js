@@ -4,6 +4,9 @@
  * - Service worker: chrome://extensions → ReADY Bot → "Service worker" (Inspect)
  * - Side panel: right-click inside the panel → Inspect
  * - Page / DOM (jQuery): DevTools on the ReADY tab → Console, filter "ReADY Bot"
+ *
+ * Log steps (filter in console): "intent", "tab", "nav", "flow", "residential",
+ * "automation", "followup", "poll", "location", "pipeline", "message", "ui·poll", "ui".
  */
 var PIPELINE_DEBUG = true;
 

@@ -1,7 +1,17 @@
 .DS_Store
+Thumbs.db
 extension.zip
+*.zip
 
-# Sensitive data
+# Sensitive data & local keys — never commit real values
+extension/openai-secrets.js
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+.claude/
+
 .browser_profile/
 venv/
 __pycache__/

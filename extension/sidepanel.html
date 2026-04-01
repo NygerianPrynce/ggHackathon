@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ReADY Bot</title>
+  <title>FReADY</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -11,13 +11,17 @@
     :root {
       --vu-gold: #CFAE70;
       --vu-gold-dark: #B8943E;
-      --vu-dark: #111111;
-      --surface-card: rgba(28, 28, 46, 0.92);
-      --text-primary: #F0F0F5;
-      --text-muted: #9A9AB0;
+      --vu-dark: #0a0e12;
+      --surface-card: rgba(18, 22, 32, 0.94);
+      --text-primary: #E8F4FF;
+      --text-muted: #8A9BB0;
       --danger: #FF6B6B;
       --success: #4ECDC4;
       --info: #74B9FF;
+      --viz-gold-bright: #F0E4C4;
+      --viz-gold: #CFAE70;
+      --viz-gold-deep: #9A7B38;
+      --viz-gold-shadow: rgba(207, 174, 112, 0.45);
       --radius: 14px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,8 +38,9 @@
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(ellipse at 20% 30%, rgba(207, 174, 112, 0.07) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 70%, rgba(78, 205, 196, 0.05) 0%, transparent 45%);
+        radial-gradient(ellipse at 50% 18%, rgba(207, 174, 112, 0.09) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 85%, rgba(154, 123, 56, 0.05) 0%, transparent 45%),
+        linear-gradient(180deg, #06090d 0%, #0a1018 100%);
       pointer-events: none;
       z-index: 0;
     }
@@ -43,10 +48,12 @@
     .card {
       background: var(--surface-card);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(207, 174, 112, 0.12);
+      border: 1px solid rgba(207, 174, 112, 0.14);
       border-radius: var(--radius);
       padding: 1.5rem 1.25rem;
-      box-shadow: 0 0 32px rgba(207, 174, 112, 0.08);
+      box-shadow:
+        0 0 40px rgba(207, 174, 112, 0.07),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
     }
     .brand h1 {
       font-size: 1.15rem;
@@ -63,31 +70,49 @@
       background: linear-gradient(90deg, transparent, rgba(207, 174, 112, 0.2), transparent);
       margin: 1rem 0;
     }
-    .mic-wrap { display: flex; justify-content: center; margin: 1rem 0; }
-    #mic-btn {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
+    .viz-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 0.5rem 0 1rem;
+    }
+    .viz-mic-btn {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      padding: 0;
       border: none;
       cursor: pointer;
-      background: linear-gradient(145deg, var(--vu-gold), var(--vu-gold-dark));
-      color: #1c1c1c;
-      font-size: 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.2s, box-shadow 0.3s;
-      box-shadow: 0 4px 20px rgba(207, 174, 112, 0.28);
+      background: transparent;
+      border-radius: 50%;
+      display: block;
+      transition: transform 0.2s ease, filter 0.25s ease;
     }
-    #mic-btn:hover { transform: scale(1.05); }
-    #mic-btn.recording {
-      animation: pulse 1.2s ease-in-out infinite;
+    .viz-mic-btn:hover { transform: scale(1.02); }
+    .viz-mic-btn:focus-visible {
+      outline: 2px solid var(--viz-gold);
+      outline-offset: 4px;
     }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.06); }
+    .viz-mic-btn.recording {
+      animation: viz-breathe 2.2s ease-in-out infinite;
     }
-    .mic-label { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.5rem; text-align: center; text-transform: uppercase; letter-spacing: 0.04em; }
+    @keyframes viz-breathe {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.06); }
+    }
+    .voice-viz-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      filter: drop-shadow(0 0 22px var(--viz-gold-shadow));
+    }
+    .mic-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
     #transcript {
       width: 100%;
       min-height: 72px;
@@ -100,20 +125,8 @@
       padding: 0.65rem 0.75rem;
       resize: vertical;
     }
-    #transcript:focus { outline: none; border-color: var(--vu-gold); }
-    #send-btn {
-      width: 100%;
-      margin-top: 0.75rem;
-      padding: 0.7rem;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 0.88rem;
-      background: linear-gradient(135deg, var(--vu-gold), var(--vu-gold-dark));
-      color: #1c1c1c;
-    }
-    #send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    #transcript:focus { outline: none; border-color: rgba(207, 174, 112, 0.5); }
+    #send-btn { display: none; }
     #question-banner {
       display: none;
       margin-top: 0.75rem;
@@ -141,7 +154,7 @@
       text-align: center;
       line-height: 1.35;
     }
-    #status.listening { color: var(--vu-gold); background: rgba(207, 174, 112, 0.1); }
+    #status.listening { color: var(--viz-gold-bright); background: rgba(207, 174, 112, 0.12); }
     #status.working { color: var(--success); }
     #status.question { color: var(--info); }
     #status.done { color: var(--success); }
@@ -161,34 +174,108 @@
     .voice-hint {
       margin-top: 0.75rem;
       font-size: 0.65rem;
-      color: rgba(154, 154, 176, 0.55);
+      color: rgba(138, 155, 176, 0.55);
       text-align: center;
       line-height: 1.4;
     }
+    #mute-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1.25rem;
+      background: none;
+      border: 1px solid rgba(207, 174, 112, 0.2);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 1rem;
+      padding: 0.3rem 0.5rem;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      z-index: 2;
+    }
+    #mute-btn:hover { color: var(--vu-gold); border-color: var(--vu-gold); }
+    #mute-btn.muted { color: var(--danger); border-color: var(--danger); }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
+      <button type="button" id="mute-btn" title="Toggle voice">🔊</button>
       <div class="brand">
-        <h1>ReADY Bot</h1>
-        <p>Speak your issue — we’ll fill the form</p>
+        <h1>FReADY</h1>
+        <p>Speak your issue — we'll fill the form</p>
       </div>
       <div class="divider"></div>
-      <div class="mic-wrap">
+      <div class="viz-wrap">
         <div style="display:flex;flex-direction:column;align-items:center;">
-          <button type="button" id="mic-btn" aria-label="Tap to speak">🎙️</button>
+          <button type="button" id="mic-btn" class="viz-mic-btn" aria-label="Tap to speak">
+            <svg class="voice-viz-svg" viewBox="0 0 200 200" aria-hidden="true">
+              <defs>
+                <radialGradient id="viz-core-grad" cx="35%" cy="35%" r="65%">
+                  <stop offset="0%" stop-color="#FFF9EC"/>
+                  <stop offset="40%" stop-color="#E8D5A8"/>
+                  <stop offset="100%" stop-color="#7A5E28"/>
+                </radialGradient>
+                <linearGradient id="viz-outer-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#F5E6C8"/>
+                  <stop offset="45%" stop-color="#CFAE70"/>
+                  <stop offset="100%" stop-color="#6B5420"/>
+                </linearGradient>
+                <linearGradient id="viz-mid-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#F0E4C4"/>
+                  <stop offset="100%" stop-color="#B8943E"/>
+                </linearGradient>
+                <filter id="viz-glow" x="-40%" y="-40%" width="180%" height="180%">
+                  <feGaussianBlur stdDeviation="1.8" result="b"/>
+                  <feMerge>
+                    <feMergeNode in="b"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+                <filter id="viz-core-glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="2.5" result="blur"/>
+                  <feMerge>
+                    <feMergeNode in="blur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              <path
+                id="viz-outer"
+                fill="rgba(55, 42, 18, 0.42)"
+                stroke="url(#viz-outer-stroke)"
+                stroke-width="1.5"
+                filter="url(#viz-glow)"
+                d=""
+              />
+              <g id="viz-mid" transform="translate(100,100)"></g>
+              <g id="viz-core-group" transform="translate(100,100)">
+                <circle r="26" fill="url(#viz-core-grad)" filter="url(#viz-core-glow)" opacity="0.95"/>
+                <g id="viz-wireframe" fill="none" stroke="rgba(232, 213, 168, 0.42)" stroke-width="0.6">
+                  <ellipse rx="26" ry="10" cx="0" cy="0" transform="rotate(0)"/>
+                  <ellipse rx="26" ry="10" cx="0" cy="0" transform="rotate(60)"/>
+                  <ellipse rx="26" ry="10" cx="0" cy="0" transform="rotate(120)"/>
+                  <circle r="26" cx="0" cy="0" opacity="0.5"/>
+                  <line x1="-18" y1="-12" x2="18" y2="12" opacity="0.4"/>
+                  <line x1="18" y1="-12" x2="-18" y2="12" opacity="0.4"/>
+                </g>
+              </g>
+            </svg>
+          </button>
           <p class="mic-label" id="mic-label">Tap to speak</p>
         </div>
       </div>
-      <textarea id="transcript" placeholder="Transcript appears here…" rows="3" aria-label="Issue text"></textarea>
-      <button type="button" id="send-btn" disabled><span>🚀</span> Send to bot</button>
+      <textarea id="transcript" placeholder="Describe the issue you are facing with your voice..." rows="3" aria-label="Issue text"></textarea>
+      <button type="button" id="send-btn" disabled>Send to FReADY</button>
       <div id="question-banner"></div>
       <div id="status">Ready — tap the mic</div>
-      <p class="voice-hint" id="voice-mode-label">Voice: tap-to-speak (Web Speech). ElevenLabs: set <code>VoiceProvider.mode</code> in <code>sidepanel.js</code> when you add the SDK.</p>
+      <p class="voice-hint" id="voice-mode-label">Type your issue or use the mic. Enter sends; Shift+Enter adds a line.</p>
     </div>
   </div>
   <script src="pipeline-debug.js"></script>
+  <script src="normalize-transcript.js"></script>
+  <script src="openai-secrets.js"></script>
+  <script src="elevenlabs.js"></script>
+  <script src="voice-visualizer.js"></script>
   <script src="sidepanel.js"></script>
 </body>
 </html>

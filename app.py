@@ -198,7 +198,7 @@ def get_bot_status():
         question_map = {
             "building": "🏢 Answer this: What BUILDING is this issue in? (e.g., 'Stevenson Center', 'Rand Hall')",
             "floor": "📐 Answer this: What FLOOR is the issue on? (e.g., 'First Floor', 'Basement')",
-            "room": "🚪 Answer this: What ROOM NUMBER? (e.g., '101', '2B'). Say 'skip' if you don't know.",
+            "room": "🚪 Answer this: What ROOM NUMBER? (e.g., '101', '2B').",
         }
         return jsonify({
             "status": "waiting",
@@ -725,21 +725,17 @@ def _handle_location_setup(callback):
         return
 
     if not bot_session.get("_room_set"):
-        if room.lower() != "skip":
-            success = _set_select2_value("locationLocationlocId", room)
-            if success:
-                bot_session["_room_set"] = True
-                time.sleep(1)
-                print(f"   ✓  Room set: {room}")
-            else:
-                print(f"   ⚠  Could not find room '{room}'. Re-asking.")
-                bot_session["room"] = None
-                bot_session["step"] = "waiting_for_info"
-                bot_session["pending_question"] = "room"
-                return
-        else:
+        success = _set_select2_value("locationLocationlocId", room)
+        if success:
             bot_session["_room_set"] = True
-            print("   ⏭  Room skipped.")
+            time.sleep(1)
+            print(f"   ✓  Room set: {room}")
+        else:
+            print(f"   ⚠  Could not find room '{room}'. Re-asking.")
+            bot_session["room"] = None
+            bot_session["step"] = "waiting_for_info"
+            bot_session["pending_question"] = "room"
+            return
 
     # If we reached here, Location is fully complete.
     callback()

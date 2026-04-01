@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "Voice-assisted maintenance requests for Vanderbilt ReADY",
   "permissions": ["sidePanel", "scripting", "tabs", "storage"],
-  "host_permissions": ["https://ready.app.vanderbilt.edu/*"],
+  "host_permissions": ["https://ready.app.vanderbilt.edu/*", "https://api.openai.com/*", "https://api.elevenlabs.io/*"],
   "background": {
     "service_worker": "background.js"
   },
